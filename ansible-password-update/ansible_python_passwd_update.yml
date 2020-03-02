@@ -1,0 +1,234 @@
+---
+- hosts: servers
+  user: ansibleadmin
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  #vars:
+        
+    # created with:
+    # python -c 'import crypt; print crypt.crypt("user1ansible", "$6$random_salt")'
+    #command: "grep nascouser4 '/projects/ansible-password-updates/hashed_password.txt'"
+    #user_pass1: $6$random_salt$8s2t1f9TdK4M/Zy.TMoQfW3vA.UCnkK3ZuV5Mo5k.bidmruC0CnqOm.frAjJUbddgJWacr3HbWHwOMnO4nc8a1
+
+    
+  tasks:
+    
+    - name: Read User Input and generate encrypted password ******
+      script: /usr/bin/python encrypt_passwd.py
+      delegate_to: localhost
+      args:
+        chdir: "/projects/ansible-password-updates"
+
+    - name: get the username nascouser1
+      shell: "grep -m1 'nascouser1' /projects/ansible-password-updates/hashed_password.txt | awk '{print $2}'"
+      delegate_to: localhost
+      args:
+        chdir: "/projects/ansible-password-updates"
+      register: username
+
+    ##- debug:
+    #    #var: username.stdout
+
+    - name: get hashed Password for nascouser1
+      shell: "grep -m1 'nascouser1' /projects/ansible-password-updates/hashed_password.txt | awk '{print $4}'"
+      delegate_to: localhost
+      register: hashpasswd
+
+    #- debug:
+        #var: hashpasswd.stdout
+
+    - name: updating password for user {{username.stdout}}
+      user: name="{{username.stdout}}" update_password=always password="{{hashpasswd.stdout}}"
+
+    - name: get new clear text Password for nascouser1
+      shell: "grep -m1 'nascouser1' /projects/ansible-password-updates/hashed_password.txt | awk '{print $3}'"
+      delegate_to: localhost
+      register: newpassword
+
+    - name: Email the user about the password change
+      mail:
+        charset: us-ascii
+        to: "{{username.stdout}}"
+        cc: ansibleadmin
+        subject: User '{{username.stdout}}'s password has been changed to '{{newpassword.stdout}}'
+        body: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+
+    - name: Email the user about the password change
+      mail:
+        charset: us-ascii
+        to: ansibleadmin
+        subject: User '{{username.stdout}}'s password has been changed to '{{newpassword.stdout}}'
+        body: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+      delegate_to: localhost
+
+    - name: get the username nascouser2
+      shell: "grep -m1 'nascouser2' /projects/ansible-password-updates/hashed_password.txt | awk '{print $2}'"
+      delegate_to: localhost
+      args:
+        chdir: "/projects/ansible-password-updates"
+      register: username
+
+    #- debug:
+        #var: username.stdout
+
+    - name: get hashed Password for nascouser2
+      shell: "grep -m1 'nascouser2' /projects/ansible-password-updates/hashed_password.txt | awk '{print $4}'"
+      delegate_to: localhost
+      register: hashpasswd
+
+    #- debug:
+        #var: hashpasswd.stdout
+
+    - name: updating password for user {{username.stdout}}
+      user: name="{{username.stdout}}" update_password=always password="{{hashpasswd.stdout}}"
+
+    - name: get new clear text Password for nascouser2
+      shell: "grep -m1 'nascouser2' /projects/ansible-password-updates/hashed_password.txt | awk '{print $3}'"
+      delegate_to: localhost
+      register: newpassword
+
+    - name: Email the user about the password change
+      mail:
+        charset: us-ascii
+        to: "{{username.stdout}}"
+        cc: ansibleadmin
+        subject: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+        body: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+
+    - name: Email the user about the password change
+      mail:
+        charset: us-ascii
+        to: ansibleadmin
+        subject: User '{{username.stdout}}'s password has been changed to '{{newpassword.stdout}}'
+        body: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+      delegate_to: localhost
+
+    - name: get the username nascouser3
+      shell: "grep -m1 'nascouser3' /projects/ansible-password-updates/hashed_password.txt | awk '{print $2}'"
+      delegate_to: localhost
+      args:
+        chdir: "/projects/ansible-password-updates"
+      register: username
+
+    #- debug:
+        #var: username.stdout
+
+    - name: get hashed Password for nascouser3
+      shell: "grep -m1 'nascouser3' /projects/ansible-password-updates/hashed_password.txt | awk '{print $4}'"
+      delegate_to: localhost
+      register: hashpasswd
+
+    #- debug:
+        #var: hashpasswd.stdout
+
+    - name: updating password for user {{username.stdout}}
+      user: name="{{username.stdout}}" update_password=always password="{{hashpasswd.stdout}}"
+
+    - name: get new clear text Password for nascouser3
+      shell: "grep -m1 'nascouser3' /projects/ansible-password-updates/hashed_password.txt | awk '{print $3}'"
+      delegate_to: localhost
+      register: newpassword
+
+    - name: Email the user about the password change
+      mail:
+        charset: us-ascii
+        to: "{{username.stdout}}"
+        cc: ansibleadmin
+        subject: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+        body: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+
+    - name: Email the user about the password change
+      mail:
+        charset: us-ascii
+        to: ansibleadmin
+        subject: User '{{username.stdout}}'s password has been changed to '{{newpassword.stdout}}'
+        body: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+      delegate_to: localhost
+
+    - name: get the username nascouser4
+      shell: "grep -m1 'nascouser4' /projects/ansible-password-updates/hashed_password.txt | awk '{print $2}'"
+      delegate_to: localhost
+      args:
+        chdir: "/projects/ansible-password-updates"
+      register: username
+
+    #- debug:
+        #var: username.stdout
+
+    - name: get hashed Password for nascouser4
+      shell: "grep -m1 'nascouser4' /projects/ansible-password-updates/hashed_password.txt | awk '{print $4}'"
+      delegate_to: localhost
+      register: hashpasswd
+
+    #- debug:
+        #var: hashpasswd.stdout
+
+    - name: updating password for user {{username.stdout}}
+      user: name="{{username.stdout}}" update_password=always password="{{hashpasswd.stdout}}"
+
+    - name: get new clear text Password for nascouser4
+      shell: "grep -m1 'nascouser4' /projects/ansible-password-updates/hashed_password.txt | awk '{print $3}'"
+      delegate_to: localhost
+      register: newpassword
+
+    - name: Email the user about the password change
+      mail:
+        charset: us-ascii
+        to: "{{username.stdout}}"
+        cc: ansibleadmin
+        subject: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+        body: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+
+    - name: Email the user about the password change
+      mail:
+        charset: us-ascii
+        to: ansibleadmin
+        subject: User '{{username.stdout}}'s password has been changed to '{{newpassword.stdout}}'
+        body: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+      delegate_to: localhost
+
+
+    - name: get the username nascouser5
+      shell: "grep -m1 'nascouser5' /projects/ansible-password-updates/hashed_password.txt | awk '{print $2}'"
+      delegate_to: localhost      
+      args:
+        chdir: "/projects/ansible-password-updates"
+      register: username
+
+    #- debug:
+        #var: username.stdout
+
+    - name: get hashed Password for  nascouser5
+      shell: "grep -m1 'nascouser5' /projects/ansible-password-updates/hashed_password.txt | awk '{print $4}'"
+      delegate_to: localhost      
+      register: hashpasswd
+
+    #- debug:
+        #var: hashpasswd.stdout
+
+    - name: updating password for user {{username.stdout}}
+      user: name="{{username.stdout}}" update_password=always password="{{hashpasswd.stdout}}"
+
+    - name: get new clear text Password for nascouser5
+      shell: "grep -m1 'nascouser5' /projects/ansible-password-updates/hashed_password.txt | awk '{print $3}'"
+      delegate_to: localhost
+      register: newpassword
+
+    - name: Email the user about the password change
+      mail:
+        charset: us-ascii
+        to: "{{username.stdout}}"
+        cc: ansibleadmin
+        subject: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+        body: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+
+    - name: Email the user about the password change
+      mail:
+        charset: us-ascii
+        to: ansibleadmin
+        subject: User '{{username.stdout}}'s password has been changed to '{{newpassword.stdout}}'
+        body: User '{{username.stdout}}'s password has been  changed to '{{newpassword.stdout}}'
+      delegate_to: localhost
+
+    - debug: msg="Passwords update task completed successfully"
